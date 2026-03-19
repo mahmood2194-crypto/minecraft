@@ -8,7 +8,7 @@ function createBot() {
         port: 56528, 
         username: 'AternosKeeper',
         offline: true,
-        // These settings fixed the "Outdated Client" and "Timeout" before
+        // إعدادات الاتصال الأساسية فقط لضمان النجاح
         skipPing: true,
         connectTimeout: 60000
     });
@@ -16,7 +16,8 @@ function createBot() {
     client.on('spawn', () => {
         console.log("✅ SUCCESS: Bot is ONLINE!");
         
-        // Simple Jump every 60 seconds to prevent AFK kick
+        // نظام قفز بسيط جداً كل دقيقة لمنع الطرد (AFK)
+        // هذا السطر لا يسبب ثقل ولا تايم آوت
         setInterval(() => {
             if (client.status === 'active') {
                 console.log("🤖 Anti-AFK: Jumping...");
@@ -32,7 +33,6 @@ function createBot() {
 
     client.on('disconnect', (packet) => {
         console.log("❌ DISCONNECTED: " + (packet.reason || "Timeout"));
-        // Wait 15 seconds before retrying
         setTimeout(createBot, 15000); 
     });
 
