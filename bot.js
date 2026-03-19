@@ -1,31 +1,42 @@
 const bedrock = require('bedrock-protocol');
 
 function createBot() {
-    console.log("--- 🚀 Connecting with Anti-AFK Mode ---");
+    console.log("--- 🚀 Connecting to Aternos (Anti-AFK Movement Mode) ---");
 
     const client = bedrock.createClient({
         host: 're_qzl.aternos.me',
-        port: 56528,
+        port: 56528, // تأكد دائماً أن هذا الرقم مطابق لموقع أترنوس حالياً
         username: 'AternosKeeper',
-        offline: true
+        offline: true,
+        connectTimeout: 60000 // وقت انتظار أطول لتجنب الـ Timeout
     });
 
     client.on('spawn', () => {
-        console.log("✅ SUCCESS: Bot is ONLINE!");
-        
-        // Anti-AFK Loop: Jump or move every 30 seconds
+        console.log("✅ SUCCESS: Bot is ONLINE and moving!");
+
+        // Anti-AFK Logic: Move every 5 minutes
         setInterval(() => {
             if (client.status === 'active') {
-                console.log("🤖 Anti-AFK: Performing a small jump...");
-                // Note: Bedrock protocol commands for movement vary, 
-                // but staying active in the protocol usually prevents the kick.
+                console.log("🏃 Bot is performing the 5-step movement walk...");
+                
+                // حركة للأمام (5 خطوات تقريباً)
                 client.write('player_auth_input', {
                     pitch: 0, yaw: 0, position: { x: 0, y: 0, z: 0 },
-                    move_vector: { x: 0, z: 0 }, head_yaw: 0, input_data: { jump_down: true },
+                    move_vector: { x: 1, z: 0 }, head_yaw: 0, input_data: { forward: true },
                     input_mode: 'mouse', play_mode: 'screen', interaction_model: 'touch'
                 });
+
+                // توقف ثم عودة للخلف بعد ثانيتين
+                setTimeout(() => {
+                    client.write('player_auth_input', {
+                        pitch: 0, yaw: 0, position: { x: 0, y: 0, z: 0 },
+                        move_vector: { x: -1, z: 0 }, head_yaw: 0, input_data: { backward: true },
+                        input_mode: 'mouse', play_mode: 'screen', interaction_model: 'touch'
+                    });
+                    console.log("↩️ Bot returned to original position.");
+                }, 2000); 
             }
-        }, 30000); // Every 30 seconds
+        }, 300000); // تكرار كل 300,000 مللي ثانية (أي 5 دقائق)
     });
 
     client.on('disconnect', (packet) => {
@@ -36,6 +47,9 @@ function createBot() {
 
     client.on('error', (err) => {
         console.log("⚠️ ERROR: " + err.message);
+        if (err.message.includes('timeout')) {
+            console.log("👉 Tip: Check if Aternos Server is ONLINE and Port is correct.");
+        }
     });
 }
 
