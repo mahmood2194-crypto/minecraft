@@ -1,6 +1,11 @@
 {
+  "name": "minecraft-bot",
+  "version": "1.0.0",
+  "main": "index.js",
   "dependencies": {
-    "bedrock-protocol": "^3.53.0",
-    "mineflayer": "^4.35.0"
+    "mineflayer": "^4.14.0"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }
