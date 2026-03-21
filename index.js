@@ -12,7 +12,7 @@ const botArgs = {
   host: 're_qzl-7VTL.aternos.me', // ضع رابط سيرفرك هنا
   port: 27872,                    // البورت الافتراضي
   username: 'botalbot',         // اسم البوت
-  version: '1.21.11'               // إصدار ماين كرافت الخاص بك
+  version: '1.21.1'               // إصدار ماين كرافت الخاص بك
 };
 
 let bot;
